@@ -1,6 +1,6 @@
 import pymongo
 import sensor.constants.database as db
-
+from sensor.exception import Sensor_Exception
 
 class MongoDBClient:
 
@@ -13,4 +13,4 @@ class MongoDBClient:
             self.database = self.client[database_name]
             self.database_name = database_name 
         except Exception as e:
-            raise e
+            raise Sensor_Exception(e, sys)

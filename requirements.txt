@@ -1,2 +1,4 @@
 pymongo[srv]==4.2.0
+from-root
+pandas
 -e .
