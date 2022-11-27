@@ -17,7 +17,10 @@ if __name__ == '__main__':
     #     raise Sensor_Exception(e, sys)
     
     ''' Testing data ingestion feature store '''
-    train_pipeline = TrainPipeline()
-    train_pipeline.run_pipeline()
-    
+    try:
+        train_pipeline = TrainPipeline()
+        train_pipeline.run_pipeline()
+    except Exception as e:
+        print(e)
+        raise Sensor_Exception(e, sys)
     

@@ -2,6 +2,7 @@ from sensor.exception import Sensor_Exception
 from sensor.logger import logging
 from sensor.configs.mongo_db_Connection import MongoDBClient
 
+import numpy as np
 import pandas as pd
 import sys
 
@@ -24,14 +25,14 @@ class SensorData:
             else:
                 collection = self.mongo_client[database_name][collection_name]
             
-            df = pd.DataFrame(list(collection.find()))           
+            df = pd.DataFrame(list(collection.find())) 
+            
+            if "_id" in df.columns.to_list():
+                df = df.drop(columns=["_id"], axis=1)
+
+            df.replace({"na": np.nan}, inplace=True)          
                    
         except Exception as e:
             raise Sensor_Exception(e, sys)
         
         return df
-            
-                
-
-
-

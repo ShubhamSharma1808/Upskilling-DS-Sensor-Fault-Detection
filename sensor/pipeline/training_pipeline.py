@@ -1,8 +1,9 @@
-from sensor.entity.config_entity import TrainingPipelineConfig, DataIngestionConfig
-from sensor.entity.artifact_entity import DataIngestionArtifact
+from sensor.entity.config_entity import TrainingPipelineConfig, DataIngestionConfig, DataValidationConfig
+from sensor.entity.artifact_entity import DataIngestionArtifact, DataValidationArtifact
 from sensor.exception import Sensor_Exception
 from sensor.logger import logging
 from sensor.components.data_ingestion import DataIngestion
+from sensor.components.data_validation import DataValidation
 import sys, os
 
 class TrainPipeline:
@@ -22,10 +23,23 @@ class TrainPipeline:
             return data_ingestion_artifact
         except Exception as e:
             raise Sensor_Exception(e, sys)
+        
+    def start_data_validation(self, data_ingestion_artifact: DataIngestionArtifact) -> DataValidationArtifact:
+        try:
+            self.data_validation_config = DataValidationConfig(training_pipeline_config=self.training_pipeline_config)
+            logging.info("Starting Data Validation")
+            data_validation = DataValidation( self.data_validation_config, data_ingestion_artifact)
+            data_validation_artifact = data_validation.initiate_data_validation()
+            logging.info(f"Data Validation Completed and artifact: {data_validation_artifact}")
+            return data_validation_artifact
+        except Exception as e:
+            raise Sensor_Exception(e, sys)
+            
 
     def run_pipeline(self):
         try:
             data_ingestion_artifact = self.start_data_ingestion()
+            data_validation_artifact = self.start_data_validation(data_ingestion_artifact)
         except Exception as e:
             raise Sensor_Exception(e, sys)
 
