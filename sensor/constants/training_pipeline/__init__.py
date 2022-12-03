@@ -28,3 +28,8 @@ DATA_VALIDATION_VALID_DIR = "validated"
 DATA_VALIDATION_INVALID_DIR = "invalid"
 DATA_VALIDATION_DRIFT_REPORT_DIR = "drift_report"
 DATA_VALIDATION_DRIFT_REPORT_FILE_NAME = "report.yaml" #using yaml instead of json, personal pref. 
+
+# data transformation related constant 
+DATA_TRANSFORMATION_DIR_NAME = "data_tranformation"
+DATA_TRANSFORMATION_TRANSFORMED_DATA_DIR = "transformed"
+DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR = "transformed_object" 

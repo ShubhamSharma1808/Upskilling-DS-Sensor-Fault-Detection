@@ -5,4 +5,6 @@ scikit-learn
 PyYAML
 scipy
 numpy
+dill
+imblearn==0.0
 -e .

@@ -3,9 +3,12 @@ from sensor.exception import Sensor_Exception
 from sensor.pipeline.training_pipeline import TrainPipeline
 import sys
 
+import warnings
+
 if __name__ == '__main__':
 
-
+    warnings.filterwarnings('ignore')
+    
     ''' Testing the MongoDB Connection '''
     # mongoDb_client = MongoDBClient()
     # print(mongoDb_client.database.list_collection_names())
@@ -22,5 +25,4 @@ if __name__ == '__main__':
         train_pipeline.run_pipeline()
     except Exception as e:
         print(e)
-        raise Sensor_Exception(e, sys)
     
