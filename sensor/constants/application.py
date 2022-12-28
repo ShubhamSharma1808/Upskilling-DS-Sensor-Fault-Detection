@@ -1,2 +1,2 @@
-APP_HOST = "0.0.0.0"
+APP_HOST = "localhost"
 APP_PORT = 8080

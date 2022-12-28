@@ -70,8 +70,8 @@ class DataTransformation:
             target_feature_test_df = target_feature_test_df.replace(TargetValueMapping().to_dict())
             logging.info("Got input and target feature of Testing Dataset")
             
-            #Applying preprocessing object on  training and testing input features
-            logging.info("Applying preprocessing object on  training and testing input features")
+            #Applying preprocessing object on training and testing input features
+            logging.info("Applying preprocessing object on training and testing input features")
             preprocessor = self.get_data_transformer_object()
             input_feature_train_array = preprocessor.fit_transform(input_feature_train_df)
             input_feature_test_array = preprocessor.transform(input_feature_test_df)
