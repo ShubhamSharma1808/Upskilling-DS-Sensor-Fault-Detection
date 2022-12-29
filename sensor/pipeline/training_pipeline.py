@@ -10,14 +10,17 @@ from sensor.components.data_transformation import DataTransformation
 from sensor.components.model_trainer import ModelTrainer
 from sensor.components.model_evaluation import ModelEvaluation
 from sensor.components.model_pusher import ModelPusher
+from sensor.constants.s3_bucket import TRAINING_BUCKET_NAME
+from sensor.constants.training_pipeline import SAVED_MODELS_DIR
+from sensor.cloud_storage.s3_syncer  import S3Sync
 import sys, os
 
 class TrainPipeline:
     
     is_training_pipeline = False
     def __init__(self) -> None:
-        training_pipeline_config = TrainingPipelineConfig()
-        self.training_pipeline_config = training_pipeline_config
+        self.training_pipeline_config = TrainingPipelineConfig()
+        self.s3_sync = S3Sync()
         
     def start_data_ingestion(self)->DataIngestionArtifact:
         try:
@@ -96,6 +99,20 @@ class TrainPipeline:
         except Exception as e:
             raise Sensor_Exception(e, sys)
 
+    def sync_artifact_dir_to_s3(self,):
+        try:
+            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/artifact/{self.training_pipeline_config.timestamp}"
+            self.s3_sync.sync_folder_from_s3(folder=self.training_pipeline_config.artifact_dir, aws_bucket_url=aws_bucket_url)
+        except Exception as e:
+            raise Sensor_Exception(e, sys)
+    
+    def sync_saved_model_dir_to_s3(self):
+        try:
+            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/{SAVED_MODELS_DIR}"
+            self.s3_sync.sync_folder_from_s3(folder=SAVED_MODELS_DIR, aws_bucket_url=aws_bucket_url)
+        except Exception as e:
+            raise Sensor_Exception(e, sys)
+
     def run_pipeline(self):
         try:
             TrainPipeline.is_training_pipeline = True
@@ -111,7 +128,10 @@ class TrainPipeline:
             else:
                 raise Exception("Trained model is not accepted.")
             TrainPipeline.is_training_pipeline = False
+            self.sync_artifact_dir_to_s3()
+            self.sync_saved_model_dir_to_s3()
         except Exception as e:
+            self.sync_artifact_dir_to_s3()
             TrainPipeline.is_training_pipeline = False
             raise Sensor_Exception(e, sys)
 
