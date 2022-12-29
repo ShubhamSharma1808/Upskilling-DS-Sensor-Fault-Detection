@@ -103,6 +103,7 @@ class TrainPipeline:
         try:
             aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/artifact/{self.training_pipeline_config.timestamp}"
             self.s3_sync.sync_folder_from_s3(folder=self.training_pipeline_config.artifact_dir, aws_bucket_url=aws_bucket_url)
+            logging.info(f"artifact dir pushed to s3 bucket with url: {aws_bucket_url}")
         except Exception as e:
             raise Sensor_Exception(e, sys)
     
@@ -110,6 +111,7 @@ class TrainPipeline:
         try:
             aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/{SAVED_MODELS_DIR}"
             self.s3_sync.sync_folder_from_s3(folder=SAVED_MODELS_DIR, aws_bucket_url=aws_bucket_url)
+            logging.info(f"saved model dir pushed to s3 bucket with url: {aws_bucket_url}")
         except Exception as e:
             raise Sensor_Exception(e, sys)
 
