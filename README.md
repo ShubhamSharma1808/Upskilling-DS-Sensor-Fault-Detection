@@ -1,3 +1,5 @@
+Personal Milestone -> Working on ML project, using CI/CD to maintain the project, and the deployment of the project using docker in AWS INfra.
+
 # ML-Project | Sensor-Fault-Detection
 
 -  Data source | Air Pressure Data that is taken from MongoDB, was picked from the https://www.scania.com/ website.
